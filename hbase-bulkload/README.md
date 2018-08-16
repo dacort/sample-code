@@ -19,7 +19,11 @@ The code is built to take an arbitrary table name to export.d
 ### HBase Export
 
 ```shell
-HADOOP_CLASSPATH=$(hbase classpath) hadoop jar hbase-exporter-1.0-SNAPSHOT.jar BulkLoadDriver <SRC_TABLE> s3://<BUCKET>/<OUTPUT_PREFIX>/ hadoop
+HADOOP_CLASSPATH=$(hbase classpath) hadoop jar hbase-exporter-1.0-SNAPSHOT.jar \
+  BulkLoadDriver \
+  <SRC_TABLE> \
+  s3://<BUCKET>/<OUTPUT_PREFIX>/ \
+  hadoop
 ```
 
 `HFileOutputFormat2.configureIncrementalLoad` in the `BulkLoadDriver` will use the `<SRC_TABLE>` in order to determine how many StoreFiles to generate.
@@ -54,5 +58,7 @@ hbase org.apache.hadoop.hbase.mapreduce.LoadIncrementalHFiles s3://<BUCKET>/<OUT
 These sites were helpful when looking for example code:
 
 http://hbase.apache.org/book.html#mapreduce.example
+
 https://stackoverflow.com/questions/46246890/how-can-i-write-small-part-of-hbase-table-into-hfiles-without-loosing-any-column
+
 http://milinda.pathirage.org/2016/12/11/hbase-bulk-load.html
