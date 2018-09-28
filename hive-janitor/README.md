@@ -4,7 +4,10 @@ Hive metastore listener that notifies SQS on table modification
 
 ## Overview
 
-Implements both a pre event and event listener to illustrate utilizing even listeners to notify other systems of changes.
+Implements both a pre event and event listener to illustrate utilizing event listeners to notify other systems of changes.
+
+In addition, implements a pre hook that fires before the query is compiled so
+the original query can be inspected.
 
 ## Building
 
@@ -14,9 +17,14 @@ Implements both a pre event and event listener to illustrate utilizing even list
 
 ## Usage
 
-1. Set the following properties either in Hive CLI (for testing) or by modifying `hive-site.xml`.
+1. Set the following properties in your `hive-site.xml` depending on which hook you want to implement..
 
 ```xml
+  <property>
+    <name>hive.exec.pre.hooks</name>
+    <value>com.aws.dcortesi.hive.QueryValidatorHook</value>
+  </property>
+
   <property>
     <name>hive.metastore.event.listeners</name>
     <value>com.aws.dcortesi.hive.Janitor</value>
@@ -31,14 +39,6 @@ Implements both a pre event and event listener to illustrate utilizing even list
     <name>janitor.queue_url</name>
     <value>https://sqs.<REGION>.amazonaws.com/<ACCOUNT_ID>/<QUEUE_NAME></value>
   </property>
-```
-
-OR
-
-```sql
-set hive.metastore.event.listeners=com.aws.dcortesi.hive.Janitor;
-set hive.metastore.pre.event.listeners=com.aws.dcortesi.hive.Sweeper;
-set janitor.queue_url=https://sqs.<REGION>.amazonaws.com/<ACCOUNT_ID>/<QUEUE_NAME>;
 ```
 
 2. Restart Hive:
