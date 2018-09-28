@@ -11,7 +11,7 @@ public class Sweeper extends MetaStorePreEventListener {
 
     public Sweeper(Configuration config) {
         super(config);
-        log.info("Janitor Sweeper preHook created");
+        log.info("Janitor Sweeper preEventHook created");
     }
 
     public void onEvent(PreEventContext preEventContext) {
