@@ -12,6 +12,10 @@ import java.io.IOException;
 public class ParquetMapper extends Mapper<LongWritable, Group, ImmutableBytesWritable, Put> {
 
     public void map(LongWritable key, Group value, Context context) throws InterruptedException, IOException {
+        // Ensure we actually have data - e.g. empty Parquet file
+        if (value.getFieldRepetitionCount("name") == 0) {
+            return;
+        }
         String outKey = value.getString("name", 0);
 
         ImmutableBytesWritable rowKey = new ImmutableBytesWritable(outKey.getBytes());
